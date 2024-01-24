@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="admin/tool/skills/addon/activityskills/db" VERSION="2023122100" COMMENT="XMLDB file for Moodle admin/tool/skills/addon/activityskills"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+    <TABLES>
+        <TABLE NAME="tool_skills_course_activity" COMMENT="Table to maintain the applied skills for course activities.">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="true"/>
+            <FIELD NAME="courseid" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+            <FIELD NAME="skill" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+            <FIELD NAME="modid" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+            <FIELD NAME="uponmodcompletion" TYPE="int" LENGTH="9" NOTNULL="false" SEQUENCE="false"/>
+            <FIELD NAME="points" TYPE="int" LENGTH="9" NOTNULL="false" SEQUENCE="false"/>
+            <FIELD NAME="level" TYPE="int" LENGTH="9" NOTNULL="false" SEQUENCE="false"/>
+            <FIELD NAME="timemodified" TYPE="int" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="id" TYPE="primary" FIELDS="id"/>
+        </KEYS>
+        </TABLE>
+    </TABLES>
+</XMLDB>
