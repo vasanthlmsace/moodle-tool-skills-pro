@@ -97,9 +97,10 @@ class helper {
         // List of skills available.
         $skills = \tool_skills\user::get($userid)->get_user_skills();
 
+        $completed = [];
         foreach ($skills as $skill) {
             $skillpoint = $skill->skillobj->get_points_to_earnskill();
-            $points = $skill->userpoints->points;
+            $points = $skill->userpoints->points ?? 0;
             $percentage = ($points / $skillpoint) * 100;
 
             if ($percentage >= 100) {
@@ -107,7 +108,7 @@ class helper {
             }
         }
 
-        return array_unique($completed);
+        return !empty($completed) ? array_unique($completed) : [];
     }
 
     /**

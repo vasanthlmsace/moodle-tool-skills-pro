@@ -289,8 +289,32 @@ class moduleskills extends \tool_skills\allocation_method {
             $transaction = $DB->start_delegated_transaction();
 
             if ($data->uponmodcompletion == skills::COMPLETIONPOINTSGRADE) {
-                $gradepoint = self::get_grade_point($data->modid, $userid);
-                $sobj->increase_points($this, $gradepoint, $userid);
+
+                if ($logdata = $DB->get_record('tool_skills_awardlogs', ['userid' => $userid, 'skill' => $data->skill,
+                    'methodid' => $data->id,
+                    'method' => 'activity', ])) {
+                    $currrentgrade = self::get_grade_point($cmid, $userid);
+                    $previousgrade = $logdata->points;
+                    $userpoints = $DB->get_record('tool_skills_userpoints', ['userid' => $userid, 'skill' => $data->skill]);
+
+                    if ($previousgrade > $currrentgrade) {
+                        $userpoints->points = abs(($previousgrade - $currrentgrade) - $userpoints->points);
+                        $DB->update_record('tool_skills_userpoints', $userpoints);
+
+                        $logdata->points = $currrentgrade;
+                        $DB->update_record('tool_skills_awardlogs', $logdata);
+                    } else {
+                        $userpoints->points = abs(($userpoints->points - $previousgrade) + $currrentgrade);
+                        $DB->update_record('tool_skills_userpoints', $userpoints);
+
+                        $logdata->points = $currrentgrade;
+                        $DB->update_record('tool_skills_awardlogs', $logdata);
+                    }
+
+                } else {
+                    $currrentgrade = self::get_grade_point($cmid, $userid);
+                    $sobj->increase_points($this, $currrentgrade, $userid);
+                }
             }
 
             $transaction->allow_commit();
